@@ -3,11 +3,13 @@ package com.thw.dabaie.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.thw.dabaie.model.dto.user.UserQueryRequest;
-import com.thw.dabaie.model.entity.User;
+
 import com.thw.dabaie.model.vo.LoginUserVO;
 import com.thw.dabaie.model.vo.UserVO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import com.thw.dabaie.model.entity.User;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 /**
