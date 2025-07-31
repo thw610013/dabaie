@@ -1,5 +1,7 @@
 package com.thw.dabaie.model.vo;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.thw.dabaie.model.entity.Question;
 import com.thw.dabaie.model.entity.QuestionBank;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -90,4 +92,6 @@ public class QuestionBankVO implements Serializable {
 
         return questionBankVO;
     }
+
+    Page<Question> questionPage;
 }

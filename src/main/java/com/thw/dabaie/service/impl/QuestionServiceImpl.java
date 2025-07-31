@@ -1,18 +1,26 @@
 package com.thw.dabaie.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.thw.dabaie.annotation.AuthCheck;
+import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.ErrorCode;
+import com.thw.dabaie.common.ResultUtils;
 import com.thw.dabaie.constant.CommonConstant;
+import com.thw.dabaie.constant.UserConstant;
 import com.thw.dabaie.exception.ThrowUtils;
 import com.thw.dabaie.mapper.QuestionMapper;
 import com.thw.dabaie.model.dto.question.QuestionQueryRequest;
 import com.thw.dabaie.model.entity.Question;
+import com.thw.dabaie.model.entity.QuestionBankQuestion;
 import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.vo.QuestionVO;
 import com.thw.dabaie.model.vo.UserVO;
+import com.thw.dabaie.service.QuestionBankQuestionService;
 import com.thw.dabaie.service.QuestionService;
 import com.thw.dabaie.service.UserService;
 import com.thw.dabaie.utils.SqlUtils;
@@ -20,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +51,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private QuestionBankQuestionService questionBankQuestionService;
 
     /**
      * 校验数据
@@ -220,5 +233,34 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         questionVOPage.setRecords(questionVOList);
         return questionVOPage;
     }
+
+
+    public Page<Question> listQuestionByPage(QuestionQueryRequest questionQueryRequest) {
+        long current = questionQueryRequest.getCurrent();
+        long size = questionQueryRequest.getPageSize();
+        // 题目表的查询条件
+        QueryWrapper<Question> queryWrapper = this.getQueryWrapper(questionQueryRequest);
+        // 根据题库查询题目列表接口
+        Long questionBankId = questionQueryRequest.getQuestionBankId();
+        if (questionBankId != null) {
+            // 查询题库内的题目 id
+            LambdaQueryWrapper<QuestionBankQuestion> lambdaQueryWrapper = Wrappers.lambdaQuery(QuestionBankQuestion.class)
+                    .select(QuestionBankQuestion::getQuestionId)
+                    .eq(QuestionBankQuestion::getQuestionBankId, questionBankId);
+            List<QuestionBankQuestion> questionList = questionBankQuestionService.list(lambdaQueryWrapper);
+            if (CollUtil.isNotEmpty(questionList)) {
+                // 取出题目 id 集合
+                Set<Long> questionIdSet = questionList.stream()
+                        .map(QuestionBankQuestion::getQuestionId)
+                        .collect(Collectors.toSet());
+                // 复用原有题目表的查询条件
+                queryWrapper.in("id", questionIdSet);
+            }
+        }
+        // 查询数据库
+        Page<Question> questionPage = this.page(new Page<>(current, size), queryWrapper);
+        return questionPage;
+    }
+
 
 }

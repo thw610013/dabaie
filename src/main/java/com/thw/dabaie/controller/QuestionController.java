@@ -17,10 +17,12 @@ import com.thw.dabaie.model.dto.question.QuestionUpdateRequest;
 import com.thw.dabaie.model.entity.Question;
 import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.vo.QuestionVO;
+import com.thw.dabaie.service.QuestionBankQuestionService;
 import com.thw.dabaie.service.QuestionService;
 import com.thw.dabaie.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -43,6 +45,8 @@ public class QuestionController {
 
     @Resource
     private UserService userService;
+    @Autowired
+    private QuestionBankQuestionService questionBankQuestionService;
 
     // region 增删改查
 
@@ -54,11 +58,16 @@ public class QuestionController {
      * @return
      */
     @PostMapping("/add")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)  //加权限
     public BaseResponse<Long> addQuestion(@RequestBody QuestionAddRequest questionAddRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(questionAddRequest == null, ErrorCode.PARAMS_ERROR);
         // todo 在此处将实体类和 DTO 进行转换
         Question question = new Question();
         BeanUtils.copyProperties(questionAddRequest, question);
+        List<String> tags = questionAddRequest.getTags();
+        if (tags != null){
+            question.setTags(JSONUtil.toJsonStr(tags));
+        }
         // 数据校验
         questionService.validQuestion(question, true);
         // todo 填充默认值
@@ -114,6 +123,10 @@ public class QuestionController {
         // todo 在此处将实体类和 DTO 进行转换
         Question question = new Question();
         BeanUtils.copyProperties(questionUpdateRequest, question);
+        List<String> tags = questionUpdateRequest.getTags();
+        if (tags != null){
+            question.setTags(JSONUtil.toJsonStr(tags));
+        }
         // 数据校验
         questionService.validQuestion(question, false);
         // 判断是否存在
@@ -151,11 +164,8 @@ public class QuestionController {
     @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<Question>> listQuestionByPage(@RequestBody QuestionQueryRequest questionQueryRequest) {
-        long current = questionQueryRequest.getCurrent();
-        long size = questionQueryRequest.getPageSize();
-        // 查询数据库
-        Page<Question> questionPage = questionService.page(new Page<>(current, size),
-                questionService.getQueryWrapper(questionQueryRequest));
+        ThrowUtils.throwIf(questionQueryRequest == null, ErrorCode.PARAMS_ERROR);
+        Page<Question> questionPage = questionService.listQuestionByPage(questionQueryRequest);
         return ResultUtils.success(questionPage);
     }
 
@@ -179,6 +189,7 @@ public class QuestionController {
         // 获取封装类
         return ResultUtils.success(questionService.getQuestionVOPage(questionPage, request));
     }
+
 
     /**
      * 分页获取当前登录用户创建的题目列表
