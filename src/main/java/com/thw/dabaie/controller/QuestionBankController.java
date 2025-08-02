@@ -18,6 +18,7 @@ import com.thw.dabaie.model.entity.Question;
 import com.thw.dabaie.model.entity.QuestionBank;
 import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.vo.QuestionBankVO;
+import com.thw.dabaie.model.vo.QuestionVO;
 import com.thw.dabaie.service.QuestionBankService;
 import com.thw.dabaie.service.QuestionService;
 import com.thw.dabaie.service.UserService;
@@ -154,7 +155,8 @@ public class QuestionBankController {
             QuestionQueryRequest questionQueryRequest = new QuestionQueryRequest();
             questionQueryRequest.setQuestionBankId(id);
             Page<Question> questionPage = questionService.listQuestionByPage(questionQueryRequest);
-            questionBankVO.setQuestionPage(questionPage);
+            Page<QuestionVO> questionVOPage = questionService.getQuestionVOPage(questionPage, request);
+            questionBankVO.setQuestionPage(questionVOPage);
         }
         // 获取封装类
         return ResultUtils.success(questionBankVO);

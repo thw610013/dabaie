@@ -93,5 +93,5 @@ public class QuestionBankVO implements Serializable {
         return questionBankVO;
     }
 
-    Page<Question> questionPage;
+    Page<QuestionVO> questionPage;
 }

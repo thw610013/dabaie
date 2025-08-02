@@ -14,10 +14,14 @@ import com.thw.dabaie.model.dto.question.QuestionAddRequest;
 import com.thw.dabaie.model.dto.question.QuestionEditRequest;
 import com.thw.dabaie.model.dto.question.QuestionQueryRequest;
 import com.thw.dabaie.model.dto.question.QuestionUpdateRequest;
+import com.thw.dabaie.model.dto.questionBank.QuestionBankQueryRequest;
 import com.thw.dabaie.model.entity.Question;
+import com.thw.dabaie.model.entity.QuestionBank;
 import com.thw.dabaie.model.entity.User;
+import com.thw.dabaie.model.vo.QuestionBankVO;
 import com.thw.dabaie.model.vo.QuestionVO;
 import com.thw.dabaie.service.QuestionBankQuestionService;
+import com.thw.dabaie.service.QuestionBankService;
 import com.thw.dabaie.service.QuestionService;
 import com.thw.dabaie.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +51,9 @@ public class QuestionController {
     private UserService userService;
     @Autowired
     private QuestionBankQuestionService questionBankQuestionService;
+
+    @Resource
+    private QuestionBankService questionBankService;
 
     // region 增删改查
 
@@ -142,7 +149,6 @@ public class QuestionController {
     /**
      * 根据 id 获取题目（封装类）
      *
-     * @param id
      * @return
      */
     @GetMapping("/get/vo")
@@ -154,6 +160,7 @@ public class QuestionController {
         // 获取封装类
         return ResultUtils.success(questionService.getQuestionVO(question, request));
     }
+
 
     /**
      * 分页获取题目列表（仅管理员可用）
