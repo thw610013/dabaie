@@ -6,7 +6,10 @@ import com.thw.dabaie.model.dto.user.UserQueryRequest;
 
 import com.thw.dabaie.model.vo.LoginUserVO;
 import com.thw.dabaie.model.vo.UserVO;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.thw.dabaie.model.entity.User;
@@ -119,5 +122,21 @@ public interface UserService extends IService<User> {
      * @return
      */
     QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
+
+
+    /**
+     * 用户签到
+     * @param userId
+     * @return
+     */
+    boolean addUserSiginIn(long userId);
+
+    /**
+     * 获取用户某个年份的签到记录
+     * @param userId 用户id
+     * @param year  年份
+     * @return 签到记录的映射
+     */
+  List<Integer> getUserSignInRecord(long userId,Integer year);
 
 }

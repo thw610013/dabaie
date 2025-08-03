@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.thw.dabaie.common.ErrorCode;
 import com.thw.dabaie.constant.CommonConstant;
+import com.thw.dabaie.constant.RedisConstant;
 import com.thw.dabaie.exception.BusinessException;
 import com.thw.dabaie.mapper.UserMapper;
 import com.thw.dabaie.model.dto.user.UserQueryRequest;
@@ -16,13 +17,21 @@ import com.thw.dabaie.model.vo.LoginUserVO;
 import com.thw.dabaie.model.vo.UserVO;
 import com.thw.dabaie.service.UserService;
 import com.thw.dabaie.utils.SqlUtils;
+
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RBitSet;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -41,6 +50,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 盐值，混淆密码
      */
     public static final String SALT = "yupi";
+
+    @Resource
+    private RedissonClient redissonClient;
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -268,5 +280,56 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
                 sortField);
         return queryWrapper;
+    }
+
+    /**
+     * 用户签到实现方法
+     * @param userId
+     * @return
+     */
+    @Override
+    public boolean addUserSiginIn(long userId) {
+        LocalDate date = LocalDate.now();
+        String key = RedisConstant.getUseSignInRedisKey(date.getYear(),userId);
+        // 获取 Redis 的 BitMap
+        RBitSet signInBitSet = redissonClient.getBitSet(key);
+        // 获取当前日期是一年中的第几天。作为偏移量是（从 1 开始计数）
+        int offset = date.getDayOfYear();
+        // 查询当前有没有签到
+        if (!signInBitSet.get(offset)){
+            // 如果没有签到 则进行签到
+            signInBitSet.set(offset,true);
+        }
+
+        return false;
+    }
+
+    /**
+     * 获取用户签到记录 (优化后)
+     * @param userId 用户id
+     * @param year  年份
+     * @return
+     */
+    @Override
+    public List<Integer> getUserSignInRecord(long userId, Integer year) {
+        // 保证 year 有值
+        if (year == null){
+            LocalDate date = LocalDate.now();
+             year = date.getYear();
+        }
+        String key = RedisConstant.getUseSignInRedisKey(year, userId);
+        // 获取 Redis 中的 BitMap
+        RBitSet signInBitSet = redissonClient.getBitSet(key);
+        // 为了性能优化 将 signInBitSet 存储到缓存中 防止频繁读取 Redis
+        BitSet bitSet = signInBitSet.asBitSet();
+        // 统计当前年份签到日期
+       List<Integer> dayList = new ArrayList<>();
+       // 从索引 0 开始查找下一个被设置为 1 的位数，由 BitSet 提供 简化了 for 循环
+        int index = bitSet.nextSetBit(0);
+        while (index >= 0){
+            dayList.add(index);
+            index = bitSet.nextSetBit(index + 1);
+        }
+        return dayList;
     }
 }
