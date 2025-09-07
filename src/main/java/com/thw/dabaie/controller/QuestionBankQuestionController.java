@@ -9,13 +9,13 @@ import com.thw.dabaie.common.ResultUtils;
 import com.thw.dabaie.constant.UserConstant;
 import com.thw.dabaie.exception.BusinessException;
 import com.thw.dabaie.exception.ThrowUtils;
-import com.thw.dabaie.model.dto.questionBankQuestion.QuestionBankQuestionAddRequest;
-import com.thw.dabaie.model.dto.questionBankQuestion.QuestionBankQuestionQueryRequest;
-import com.thw.dabaie.model.dto.questionBankQuestion.QuestionBankQuestionUpdateRequest;
+import com.thw.dabaie.model.dto.question.QuestionBatchDeleteRequest;
+import com.thw.dabaie.model.dto.questionBankQuestion.*;
 import com.thw.dabaie.model.entity.QuestionBankQuestion;
 import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.vo.QuestionBankQuestionVO;
 import com.thw.dabaie.service.QuestionBankQuestionService;
+import com.thw.dabaie.service.QuestionService;
 import com.thw.dabaie.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 题库题目关联表接口
@@ -40,6 +41,11 @@ public class QuestionBankQuestionController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private QuestionService questionService;
+
+
 
     // region 增删改查
 
@@ -202,6 +208,56 @@ public class QuestionBankQuestionController {
         // 获取封装类
         return ResultUtils.success(questionBankQuestionService.getQuestionBankQuestionVOPage(questionBankQuestionPage, request));
     }
+
+    /**
+     * 批量添加题库题目（仅管理员可用）
+     * @param questionBankQuestionBatchAddRequest
+     * @param request
+     * @return
+     */
+
+    @PostMapping("/add/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchAddQuestionToBank(@RequestBody QuestionBankQuestionBatchAddRequest questionBankQuestionBatchAddRequest, HttpServletRequest request) {
+        // 参数校验
+        ThrowUtils.throwIf(questionBankQuestionBatchAddRequest == null, ErrorCode.PARAMS_ERROR);
+        User loginUser = userService.getLoginUser(request);
+        Long questionBankId = questionBankQuestionBatchAddRequest.getQuestionBankId();
+        List<Long> questionIdList =  questionBankQuestionBatchAddRequest.getQuestionIdList();
+        questionBankQuestionService.batchAddQuestionsToBank(questionIdList,questionBankId,loginUser);
+        return ResultUtils.success(true);
+    }
+
+    /**
+     * 批量从题库中移除题目
+     * @param questionBankQuestionBatchRemoveRequest
+     * @param
+     * @return
+     */
+    @PostMapping("/remove/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchRemoveQuestionsFromBank(@RequestBody QuestionBankQuestionBatchRemoveRequest questionBankQuestionBatchRemoveRequest) {
+        // 参数校验
+        ThrowUtils.throwIf(questionBankQuestionBatchRemoveRequest == null, ErrorCode.PARAMS_ERROR);
+        Long questionBankId = questionBankQuestionBatchRemoveRequest.getQuestionBankId();
+        List<Long> questionIdList =  questionBankQuestionBatchRemoveRequest.getQuestionIdList();
+        questionBankQuestionService.batchRemoveQuestionToBank(questionIdList,questionBankId);
+        return ResultUtils.success(true);
+    }
+
+    /**
+     * 批量删除题目
+     * @param questionBatchDeleteRequest
+     * @return
+     */
+    @PostMapping("/delete/batch")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> batchDeleteQuestions(@RequestBody QuestionBatchDeleteRequest questionBatchDeleteRequest  ) {
+        ThrowUtils.throwIf(questionBatchDeleteRequest == null, ErrorCode.PARAMS_ERROR);
+        questionService.batchDeleteQuestions(questionBatchDeleteRequest.getQuestionIdList());
+        return ResultUtils.success(true);
+    }
+
 
 
 }
