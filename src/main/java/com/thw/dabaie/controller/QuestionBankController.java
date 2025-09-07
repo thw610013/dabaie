@@ -1,7 +1,9 @@
 package com.thw.dabaie.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.jd.platform.hotkey.client.callback.JdHotKeyStore;
 import com.thw.dabaie.annotation.AuthCheck;
+import com.thw.dabaie.annotation.HotKeyCache;
 import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.DeleteRequest;
 import com.thw.dabaie.common.ErrorCode;
@@ -135,30 +137,33 @@ public class QuestionBankController {
 
     /**
      * 根据 id 获取题库（封装类）
-     *
+     * 改造接口，接入京东 hotkey 缓存
      * @param
      * @return
      */
     @GetMapping("/get/vo")
+    @HotKeyCache(key = "'bank_detail_' + #questionBankQueryRequest.id", type = QuestionBankVO.class)
     public BaseResponse<QuestionBankVO> getQuestionBankVOById(QuestionBankQueryRequest questionBankQueryRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(questionBankQueryRequest == null, ErrorCode.PARAMS_ERROR);
         Long id = questionBankQueryRequest.getId();
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+
         // 查询数据库
         QuestionBank questionBank = questionBankService.getById(id);
         ThrowUtils.throwIf(questionBank == null, ErrorCode.NOT_FOUND_ERROR);
-        // 查询题库封装类
+
+        // 封装 VO
         QuestionBankVO questionBankVO = questionBankService.getQuestionBankVO(questionBank, request);
+
         // 是否要关联查询题库下的题目列表
-        boolean needQueryQuestionList = questionBankQueryRequest.isNeedQueryQuestionList();
-        if (needQueryQuestionList) {
+        if (questionBankQueryRequest.isNeedQueryQuestionList()) {
             QuestionQueryRequest questionQueryRequest = new QuestionQueryRequest();
             questionQueryRequest.setQuestionBankId(id);
             Page<Question> questionPage = questionService.listQuestionByPage(questionQueryRequest);
             Page<QuestionVO> questionVOPage = questionService.getQuestionVOPage(questionPage, request);
             questionBankVO.setQuestionPage(questionVOPage);
         }
-        // 获取封装类
+
         return ResultUtils.success(questionBankVO);
     }
 

@@ -3,6 +3,7 @@ package com.thw.dabaie.controller;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.thw.dabaie.annotation.AuthCheck;
+import com.thw.dabaie.annotation.HotKeyCache;
 import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.DeleteRequest;
 import com.thw.dabaie.common.ErrorCode;
@@ -148,15 +149,17 @@ public class QuestionController {
 
     /**
      * 根据 id 获取题目（封装类）
-     *
-     * @return
+     * 支持 hotkey 探测
      */
     @GetMapping("/get/vo")
+    @HotKeyCache(key = "'question_' + #id", type = QuestionVO.class)
     public BaseResponse<QuestionVO> getQuestionVOById(long id, HttpServletRequest request) {
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
+
         // 查询数据库
         Question question = questionService.getById(id);
         ThrowUtils.throwIf(question == null, ErrorCode.NOT_FOUND_ERROR);
+
         // 获取封装类
         return ResultUtils.success(questionService.getQuestionVO(question, request));
     }
