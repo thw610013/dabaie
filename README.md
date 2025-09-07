@@ -183,3 +183,4 @@ String upperDataKey = "UserComment";
 ### 项目亮点
 1.使用 BitMap 存储用户签到数据，极致压缩存储空间，百万用户签到数据占用内存不足 500MB；
 2.使用 Elasticsearch 实现题目数据的存储和分词搜索，需要将数据库同步到 Elasticsearch
+3.引入京东 Hotkey热点探索框架，能够实时监测热点数据，减少数据库并发访问量，提升响应。

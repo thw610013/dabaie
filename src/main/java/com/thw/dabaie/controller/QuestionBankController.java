@@ -1,5 +1,8 @@
 package com.thw.dabaie.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jd.platform.hotkey.client.callback.JdHotKeyStore;
 import com.thw.dabaie.annotation.AuthCheck;
@@ -193,6 +196,8 @@ public class QuestionBankController {
      * @return
      */
     @PostMapping("/list/page/vo")
+    // 注解规则：方法名称、熔断/限流时定义的规则、降级时定义的规则
+    @SentinelResource(value = "listQuestionBankVOByPage",blockHandler = "handleBlockException",fallback = "handleFallback")
     public BaseResponse<Page<QuestionBankVO>> listQuestionBankVOByPage(@RequestBody QuestionBankQueryRequest questionBankQueryRequest,
                                                                HttpServletRequest request) {
         long current = questionBankQueryRequest.getCurrent();
@@ -204,6 +209,32 @@ public class QuestionBankController {
                 questionBankService.getQueryWrapper(questionBankQueryRequest));
         // 获取封装类
         return ResultUtils.success(questionBankService.getQuestionBankVOPage(questionBankPage, request));
+    }
+
+    /**
+     * 限流、熔断规则
+     * @param questionBankQueryRequest
+     * @param request
+     * @param ex
+     * @return
+     */
+    public BaseResponse<Page<QuestionBankVO>> handleBlockException(@RequestBody QuestionBankQueryRequest questionBankQueryRequest, HttpServletRequest request, BlockException ex) {
+        // 如果是触发了降级规则，就调用降级的方法
+        if (ex instanceof DegradeException){
+            return  handleFallback(questionBankQueryRequest, request, ex);
+        }
+        return ResultUtils.error(ErrorCode.SYSTEM_ERROR,"系统压力过大，请耐心等待");
+    }
+
+    /**
+     * 降级规则 （处理业务本身的异常)
+     * @param questionBankQueryRequest
+     * @param request
+     * @param ex
+     * @return
+     */
+    public  BaseResponse<Page<QuestionBankVO>> handleFallback(@RequestBody QuestionBankQueryRequest questionBankQueryRequest, HttpServletRequest request,Throwable ex) {
+        return ResultUtils.success(null);
     }
 
     /**
