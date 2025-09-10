@@ -168,6 +168,7 @@ wx:
   open:
     appId: xxx
     appSecret: xxx
+
 # 对象存储
 # todo 需替换配置
 cos:
@@ -176,6 +177,7 @@ cos:
     secretKey: xxx
     region: xxx
     bucket: xxx
+
 # 接口文档配置
 knife4j:
   enable: true
@@ -187,3 +189,18 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.thw.dabaie.controller
+          -
+#sa-token 配置
+sa-token:
+  #token名称
+  token-name: mianshiya
+  active-timeout: -1
+  timeout: 2592000
+  # 是否允许一个账号多地同时登录
+  is-concurrent: false
+  # 在多人登录同一账号时，是否共用同一个 token (为 true 时所有登录共用一个 token)
+  is-share: true
+  # token风格 （默认可取值:uuid/simple-uuid/random-32/random-64/random-128/tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
