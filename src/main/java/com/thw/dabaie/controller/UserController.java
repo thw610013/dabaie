@@ -2,7 +2,6 @@ package com.thw.dabaie.controller;
 
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.thw.dabaie.annotation.AuthCheck;
 import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.DeleteRequest;
 import com.thw.dabaie.common.ErrorCode;
@@ -11,22 +10,11 @@ import com.thw.dabaie.config.WxOpenConfig;
 import com.thw.dabaie.constant.UserConstant;
 import com.thw.dabaie.exception.BusinessException;
 import com.thw.dabaie.exception.ThrowUtils;
-import com.thw.dabaie.model.dto.user.UserAddRequest;
-import com.thw.dabaie.model.dto.user.UserLoginRequest;
-import com.thw.dabaie.model.dto.user.UserQueryRequest;
-import com.thw.dabaie.model.dto.user.UserRegisterRequest;
-import com.thw.dabaie.model.dto.user.UserUpdateMyRequest;
-import com.thw.dabaie.model.dto.user.UserUpdateRequest;
+import com.thw.dabaie.model.dto.user.*;
 import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.vo.LoginUserVO;
 import com.thw.dabaie.model.vo.UserVO;
 import com.thw.dabaie.service.UserService;
-
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
@@ -34,20 +22,20 @@ import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 import static com.thw.dabaie.service.impl.UserServiceImpl.SALT;
 
 /**
  * 用户接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ 
+   
  */
 @RestController
 @RequestMapping("/user")

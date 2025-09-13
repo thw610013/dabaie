@@ -1,7 +1,7 @@
 package com.thw.dabaie.mapper;
 
-import com.thw.dabaie.model.entity.QuestionBank;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.thw.dabaie.model.entity.QuestionBank;
 
 /**
 * @author tianhaowen

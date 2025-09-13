@@ -3,10 +3,7 @@ package com.thw.dabaie.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.thw.dabaie.common.BaseResponse;
-import com.thw.dabaie.model.dto.post.PostQueryRequest;
 import com.thw.dabaie.model.dto.question.QuestionQueryRequest;
-import com.thw.dabaie.model.entity.Post;
 import com.thw.dabaie.model.entity.Question;
 import com.thw.dabaie.model.vo.QuestionVO;
 
@@ -16,7 +13,7 @@ import java.util.List;
 /**
  * 题目服务
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+
  * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 public interface QuestionService extends IService<Question> {

@@ -1,7 +1,7 @@
 package generator.service;
 
-import com.thw.dabaie.model.entity.QuestionBankQuestion;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.thw.dabaie.model.entity.QuestionBankQuestion;
 
 /**
 * @author tianhaowen

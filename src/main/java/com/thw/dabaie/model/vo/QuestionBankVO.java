@@ -1,7 +1,6 @@
 package com.thw.dabaie.model.vo;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.thw.dabaie.model.entity.Question;
 import com.thw.dabaie.model.entity.QuestionBank;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -12,7 +11,7 @@ import java.util.Date;
 /**
  * 题库视图
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ 
  * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @Data

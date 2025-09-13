@@ -5,8 +5,6 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.jd.platform.hotkey.client.callback.JdHotKeyStore;
-import com.thw.dabaie.annotation.AuthCheck;
 import com.thw.dabaie.annotation.HotKeyCache;
 import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.DeleteRequest;
@@ -38,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 题库接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ 
  * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @RestController

@@ -1,13 +1,9 @@
 package com.thw.dabaie.job.cycle;
 
 import cn.hutool.core.collection.CollUtil;
-import com.thw.dabaie.esdao.PostEsDao;
 import com.thw.dabaie.esdao.QuestionEsDao;
-import com.thw.dabaie.mapper.PostMapper;
 import com.thw.dabaie.mapper.QuestionMapper;
-import com.thw.dabaie.model.dto.post.PostEsDTO;
 import com.thw.dabaie.model.dto.question.QuestionEsDTO;
-import com.thw.dabaie.model.entity.Post;
 import com.thw.dabaie.model.entity.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,8 +17,8 @@ import java.util.stream.Collectors;
 /**
  * 增量同步帖子到 es
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ 
+   
  */
 // todo 取消注释开启任务
 @Component

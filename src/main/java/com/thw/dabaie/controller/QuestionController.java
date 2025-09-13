@@ -3,7 +3,6 @@ package com.thw.dabaie.controller;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.thw.dabaie.annotation.AuthCheck;
 import com.thw.dabaie.annotation.HotKeyCache;
 import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.DeleteRequest;
@@ -16,11 +15,8 @@ import com.thw.dabaie.model.dto.question.QuestionAddRequest;
 import com.thw.dabaie.model.dto.question.QuestionEditRequest;
 import com.thw.dabaie.model.dto.question.QuestionQueryRequest;
 import com.thw.dabaie.model.dto.question.QuestionUpdateRequest;
-import com.thw.dabaie.model.dto.questionBank.QuestionBankQueryRequest;
 import com.thw.dabaie.model.entity.Question;
-import com.thw.dabaie.model.entity.QuestionBank;
 import com.thw.dabaie.model.entity.User;
-import com.thw.dabaie.model.vo.QuestionBankVO;
 import com.thw.dabaie.model.vo.QuestionVO;
 import com.thw.dabaie.service.QuestionBankQuestionService;
 import com.thw.dabaie.service.QuestionBankService;
@@ -38,7 +34,7 @@ import java.util.List;
 /**
  * 题目接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ 
  * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @RestController

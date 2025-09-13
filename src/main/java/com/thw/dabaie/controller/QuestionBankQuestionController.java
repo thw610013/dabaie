@@ -2,7 +2,6 @@ package com.thw.dabaie.controller;
 
 import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.thw.dabaie.annotation.AuthCheck;
 import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.DeleteRequest;
 import com.thw.dabaie.common.ErrorCode;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * 题库题目关联表接口
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ 
  * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @RestController

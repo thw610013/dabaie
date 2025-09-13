@@ -1,9 +1,9 @@
 package generator.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.thw.dabaie.mapper.QuestionBankMapper;
 import com.thw.dabaie.model.entity.QuestionBank;
 import generator.service.QuestionBankService;
-import com.thw.dabaie.mapper.QuestionBankMapper;
 import org.springframework.stereotype.Service;
 
 /**

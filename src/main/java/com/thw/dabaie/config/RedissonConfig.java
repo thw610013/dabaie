@@ -1,6 +1,5 @@
 package com.thw.dabaie.config;
 
-import io.swagger.models.auth.In;
 import lombok.Data;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;

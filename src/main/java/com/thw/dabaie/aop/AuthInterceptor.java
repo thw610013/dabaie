@@ -3,14 +3,11 @@ package com.thw.dabaie.aop;
 import com.thw.dabaie.annotation.AuthCheck;
 import com.thw.dabaie.common.ErrorCode;
 import com.thw.dabaie.exception.BusinessException;
-
+import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.enums.UserRoleEnum;
 import com.thw.dabaie.service.UserService;
-import com.thw.dabaie.model.entity.User;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 权限校验 AOP
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 //@Aspect
 //@Component

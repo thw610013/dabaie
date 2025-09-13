@@ -6,12 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.thw.dabaie.annotation.AuthCheck;
-import com.thw.dabaie.common.BaseResponse;
 import com.thw.dabaie.common.ErrorCode;
-import com.thw.dabaie.common.ResultUtils;
 import com.thw.dabaie.constant.CommonConstant;
-import com.thw.dabaie.constant.UserConstant;
 import com.thw.dabaie.exception.ThrowUtils;
 import com.thw.dabaie.mapper.QuestionMapper;
 import com.thw.dabaie.model.dto.question.QuestionEsDTO;
@@ -43,8 +39,6 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +48,7 @@ import java.util.stream.Collectors;
 /**
  * 题目服务实现
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
+ 
  * @from <a href="https://www.code-nav.cn">编程导航学习圈</a>
  */
 @Service

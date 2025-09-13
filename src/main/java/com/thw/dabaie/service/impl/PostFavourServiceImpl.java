@@ -13,16 +13,17 @@ import com.thw.dabaie.model.entity.PostFavour;
 import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.service.PostFavourService;
 import com.thw.dabaie.service.PostService;
-import javax.annotation.Resource;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 /**
  * 帖子收藏服务实现
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ 
+   
  */
 @Service
 public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFavour>

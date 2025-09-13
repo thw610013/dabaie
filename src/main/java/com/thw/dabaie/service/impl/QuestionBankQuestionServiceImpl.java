@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.thw.dabaie.common.ErrorCode;
 import com.thw.dabaie.constant.CommonConstant;
-import com.thw.dabaie.exception.BusinessException;
 import com.thw.dabaie.exception.ThrowUtils;
 import com.thw.dabaie.mapper.QuestionBankQuestionMapper;
 import com.thw.dabaie.model.dto.questionBankQuestion.QuestionBankQuestionQueryRequest;
@@ -27,8 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 题库题目关联表服务实现

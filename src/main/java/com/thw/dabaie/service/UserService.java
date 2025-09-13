@@ -3,23 +3,19 @@ package com.thw.dabaie.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.thw.dabaie.model.dto.user.UserQueryRequest;
-
+import com.thw.dabaie.model.entity.User;
 import com.thw.dabaie.model.vo.LoginUserVO;
 import com.thw.dabaie.model.vo.UserVO;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-
-import com.thw.dabaie.model.entity.User;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 用户服务
  *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ 
+   
  */
 public interface UserService extends IService<User> {
 
